@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf App</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+</head>
+<body>
+    <header>
+        <h1>Bookshelf Apps</h1>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+        </label>
+    </header>
+
+    <main>
+        <section class="searchAndAdd">
+            <div class="search">
+                <input placeholder="Cari judul buku" id="search" name="text" type="text" />
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="addBook">
+                <button id="addBook"><i class="fa-regular fa-square-plus"></i><span>Tambah Buku</span></button>
+            </div>
+        </section>
+
+        <section class="formBook">
+            <div class="input_section">
+                <h2>Masukkan Buku Baru</h2>
+                <form class="inputBook">
+                    <div class="input">
+                        <input type="BookTitle" type="text" placeholder="Judul" required >
+                    </div>
+                    <div class="input">
+                        <input type="BookAuthor" type="text" placeholder="Penulis" required >
+                    </div>
+                    <div class="input">
+                        <input type="BookYear" type="text" placeholder="Tahun" required >
+                    </div>
+                    <div class="input">
+                        <input type="Bookmark" type="text" placeholder="Tandai halaman" required >
+                    </div>
+                    <div class="input_inline">
+                        <label for="inputBookIsComplete">Selesai dibaca</label>
+                        <input id="inputBookIsComplete" type="checkbox">
+                    </div>
+                    <button id="bookSubmit" type="submit">Tambah Buku</button>
+                </form>
+            </div>
+        </section>
+        
+        <section class="book_shelf">
+            <div class="unfinished">
+                <h2>Belum selesai dibaca</h2>
+                <div id="incompleteBookshelfList" class="book_list">
+                    <article class="book_item">
+                        <h3>Si Porter</h3>
+                        <p>Penulis: Farel</p>
+                        <p>Tahun: 2024</p>
+                        <p>Halaman ke: 25</p>
+                        <div class="action">
+                            <button class="done"><i class="fa-regular fa-circle-check"></i>Selesai dibaca</button>
+                            <button class="edit"><i class="fa-solid fa-pen"></i>Edit</button>
+                            <button class="delete"><i class="fa-regular fa-circle-xmark"></i>Hapus</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="finished">
+                <h2>Selesai dibaca</h2>
+                <div id="completeBookshelfList" class="book_list">
+                    <article class="book_item">
+                        <h3>Si Porter</h3>
+                        <p>Penulis: Farel</p>
+                        <p>Tahun: 2024</p>
+                        <p>Halaman ke: 25</p>
+                        <div class="action">
+                            <button class="done"><i class="fa-regular fa-circle-check"></i>Selesai dibaca</button>
+                            <button class="edit"><i class="fa-solid fa-pen"></i></i>Edit</button>
+                            <button class="delete"><i class="fa-regular fa-circle-xmark"></i>Hapus</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
