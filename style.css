@@ -9,14 +9,23 @@
 }
 :root {
   --bg-dark-1: #040034;
-  --bg-dark-2: #292929;
+  --bg-dark-2: #302f36;
   --bg-light-1: #2277cd;
+  --text-1: #f2f8ff;
+  --text-2: #444cf7;
 }
 button {
   border: none;
   outline: none;
   cursor: pointer;
+  width: 100%;
+  border-radius: 15px;
 }
+
+body{
+    background-color: var(--bg-dark-2);
+}
+
 header {
   background-color: var(--bg-dark-1);
   color: #fff;
@@ -142,9 +151,8 @@ main {
   display: flex;
 }
 .addBook button {
-  width: 100%;
+  
   background-color: white;
-  border-radius: 15px;
   cursor: pointer;
   color: white;
   border: 2px solid rgba(68, 76, 247, 0.6);
@@ -272,8 +280,6 @@ article {
 .delete {
   flex-grow: 1;
   height: 30px;
-  border-radius: 20px;
-  cursor: pointer;
 }
 .done i,
 .edit i,
