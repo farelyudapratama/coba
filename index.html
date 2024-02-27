@@ -13,10 +13,6 @@
 <body>
     <header>
         <h1>Bookshelf Apps</h1>
-        <label class="switch">
-            <input type="checkbox">
-            <span class="slider"></span>
-        </label>
     </header>
 
     <main>
@@ -35,16 +31,16 @@
                 <h2>Masukkan Buku Baru</h2>
                 <form class="inputBook">
                     <div class="input">
-                        <input type="BookTitle" type="text" placeholder="Judul" required >
+                        <input class="BookTitle" type="text" placeholder="Judul" required >
                     </div>
                     <div class="input">
-                        <input type="BookAuthor" type="text" placeholder="Penulis" required >
+                        <input class="BookAuthor" type="text" placeholder="Penulis" required >
                     </div>
                     <div class="input">
-                        <input type="BookYear" type="text" placeholder="Tahun" required >
+                        <input class="BookYear" type="number" placeholder="Tahun" required >
                     </div>
                     <div class="input">
-                        <input type="Bookmark" type="text" placeholder="Tandai halaman" required >
+                        <input class="Bookmark" type="number" placeholder="Tandai halaman" required >
                     </div>
                     <div class="input_inline">
                         <label for="inputBookIsComplete">Selesai dibaca</label>
@@ -81,7 +77,7 @@
                         <p>Tahun: 2024</p>
                         <p>Halaman ke: 25</p>
                         <div class="action">
-                            <button class="done"><i class="fa-regular fa-circle-check"></i>Selesai dibaca</button>
+                            <button class="undone"><i class="fa-regular fa-circle-check"></i>Belum dibaca</button>
                             <button class="edit"><i class="fa-solid fa-pen"></i></i>Edit</button>
                             <button class="delete"><i class="fa-regular fa-circle-xmark"></i>Hapus</button>
                         </div>
