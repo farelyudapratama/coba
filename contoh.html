@@ -1,223 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bookshelf App</title>
-<style>
-  /* General styles */
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f3f3;
-    margin: 0;
-    padding: 20px;
-  }
-  h1 {
-    text-align: center;
-    color: #333;
-  }
-  /* Bookshelf styles */
-  .bookshelf {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  .bookshelf h2 {
-    margin: 0;
-    color: #333;
-    font-size: 20px;
-  }
-  .books {
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 45%;
-    background-color: #fff;
-    border-radius: 5px;
-  }
-  .books ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  .books li {
-    margin-bottom: 10px;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 5px;
-  }
-  .books li span {
-    font-weight: bold;
-  }
-  .books li button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: none;
-    background-color: #333;
-    color: #fff;
-    border-radius: 3px;
-  }
-  .books li button:hover {
-    background-color: #555;
-  }
-  /* Form styles */
-  #book-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  #book-form label {
-    display: block;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  #book-form input[type="text"],
-  #book-form input[type="number"],
-  #book-form input[type="checkbox"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box;
-  }
-  #book-form button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  #book-form button[type="submit"]:hover {
-    background-color: #555;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farel Yuda Pratama</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-<h1>Bookshelf App</h1>
-<div class="bookshelf">
-  <div class="books" id="unfinished-books">
-    <h2>Belum selesai dibaca</h2>
-    <ul id="unfinished-list"></ul>
-  </div>
-  <div class="books" id="finished-books">
-    <h2>Selesai dibaca</h2>
-    <ul id="finished-list"></ul>
-  </div>
-</div>
-<div>
-  <h2>Tambah Buku Baru</h2>
-  <form id="book-form">
-    <label for="title">Judul:</label>
-    <input type="text" id="title" name="title" required>
-    <label for="author">Penulis:</label>
-    <input type="text" id="author" name="author" required>
-    <label for="year">Tahun:</label>
-    <input type="number" id="year" name="year" required>
-    <label for="isComplete">Selesai dibaca:</label>
-    <input type="checkbox" id="isComplete" name="isComplete">
-    <button type="submit">Tambahkan Buku</button>
-  </form>
-</div>
+    <div class="navbar">
+        
+        <div >
+            
+        </div>
+        <div class="nav-toggler">
+            
+        </div>
+    </div>
+    <div>
+        <div class="content">
+            <div id="tentang">
+                
+            </div>
+            <div id="layanan">
+                
 
-<script>
-  // Function to generate unique ID
-  function generateID() {
-    return +new Date();
-  }
+            </div>
+            <div id="portofolio">
+                
+            </div>
 
-  // Function to render book to the specified shelf
-  function renderBook(book, shelf) {
-    const list = document.getElementById(shelf + "-list");
-    const li = document.createElement("li");
-    li.innerHTML = `<span>${book.title} - ${book.author} (${book.year})</span>`;
-    const buttonMove = document.createElement("button");
-    buttonMove.textContent = shelf === "unfinished" ? "Selesai" : "Belum Selesai";
-    buttonMove.addEventListener("click", () => moveBook(book.id, shelf === "unfinished" ? "finished" : "unfinished"));
-    const buttonDelete = document.createElement("button");
-    buttonDelete.textContent = "Hapus";
-    buttonDelete.addEventListener("click", () => deleteBook(book.id));
-    li.appendChild(buttonMove);
-    li.appendChild(buttonDelete);
-    list.appendChild(li);
-  }
+        </div>
+        <div>
+            <div id="kontak">
+                
+            </div>
+        </div>
+    </div>
 
-  // Function to add a new book
-  function addBook(event) {
-    event.preventDefault();
-    const title = document.getElementById("title").value;
-    const author = document.getElementById("author").value;
-    const year = document.getElementById("year").value;
-    const isComplete = document.getElementById("isComplete").checked;
-    const book = {
-      id: generateID(),
-      title,
-      author,
-      year,
-      isComplete
-    };
-    const shelf = isComplete ? "finished" : "unfinished";
-    renderBook(book, shelf);
-    saveToLocalStorage();
-    event.target.reset();
-  }
+    <div>
+       
+    </div>
 
-  // Function to move book between shelves
-  function moveBook(id, shelf) {
-    const book = books.find(book => book.id === id);
-    const oldShelf = book.isComplete ? "finished" : "unfinished";
-    book.isComplete = !book.isComplete;
-    const newList = document.getElementById(shelf + "-list");
-    const oldList = document.getElementById(oldShelf + "-list");
-    const listItem = document.querySelector(`#${oldShelf}-list li span:first-child`);
-    if (shelf === "finished") {
-      listItem.parentNode.removeChild(listItem);
-    } else {
-      listItem.parentNode.removeChild(listItem);
-    }
-    renderBook(book, shelf);
-    saveToLocalStorage();
-  }
-
-  // Function to delete a book
-  function deleteBook(id) {
-    const bookIndex = books.findIndex(book => book.id === id);
-    if (bookIndex !== -1) {
-      const book = books[bookIndex];
-      const shelf = book.isComplete ? "finished" : "unfinished";
-      books.splice(bookIndex, 1);
-      const listItem = document.querySelector(`#${shelf}-list li span:first-child`);
-      listItem.parentNode.removeChild(listItem);
-      saveToLocalStorage();
-    }
-  }
-
-  // Function to save books data to localStorage
-  function saveToLocalStorage() {
-    localStorage.setItem("books", JSON.stringify(books));
-  }
-
-  // Function to load books data from localStorage
-  function loadFromLocalStorage() {
-   
-    const booksData = JSON.parse(localStorage.getItem("books"));
-  if (booksData) {
-    books = booksData;
-    books.forEach(book => {
-      const shelf = book.isComplete ? "finished" : "unfinished";
-      renderBook(book, shelf);
-    });
-  }
-}
-
-let books = [];
-
-// Load existing books from localStorage
-loadFromLocalStorage();
-
-// Event listener for book form submission
-document.getElementById("book-form").addEventListener("submit", addBook);
-</script>
+    <script src="script/script.js"></script>
 </body>
+
 </html>

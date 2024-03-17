@@ -13,28 +13,20 @@ document.addEventListener('click', function (event) {
     }
 });
 
-
-// Function to add a new book
-function addBook(title, author, year, page, isComplete) {
+function addBook(title, author, year, page, isCompleted) {
     const book = {
-        title: title,
-        author: author,
-        year: year,
-        page: page,
-        isComplete: isComplete
+        title,
+        author,
+        year,
+        page,
+        isCompleted
     };
-
-    let books = [];
-
-    if (localStorage.getItem('books') !== null) {
-        books = JSON.parse(localStorage.getItem('books'));
-    }
-
+    const books = JSON.parse(localStorage.getItem('books')) || [];
     books.push(book);
     localStorage.setItem('books', JSON.stringify(books));
+    displayBooks();
 }
 
-// Function to display books in the respective shelf
 function displayBooks() {
     const incompleteBookshelfList = document.getElementById('incompleteBookshelfList');
     const completeBookshelfList = document.getElementById('completeBookshelfList');
@@ -42,55 +34,46 @@ function displayBooks() {
     incompleteBookshelfList.innerHTML = '';
     completeBookshelfList.innerHTML = '';
 
-    let books = [];
+    const books = JSON.parse(localStorage.getItem('books')) || [];
 
-    if (localStorage.getItem('books') !== null) {
-        books = JSON.parse(localStorage.getItem('books'));
+    books.forEach((book, index) => {
+        const bookItem = document.createElement('article');
+        bookItem.classList.add('book_item');
 
-        books.forEach(book => {
-            const bookItem = document.createElement('article');
-            bookItem.classList.add('book_item');
+        const actionBtnText = book.isCompleted ? 'Belum dibaca' : 'Selesai dibaca';
+        const actionBtnClass = book.isCompleted ? 'undone' : 'done';
 
-            bookItem.innerHTML = `
-                <h3>${book.title}</h3>
-                <p>Penulis: ${book.author}</p>
-                <p>Tahun: ${book.year}</p>
-                <p>Halaman ke: ${book.page}</p>
-                <div class="action">
-                    ${book.isComplete ?
-                        `<button class="undone" onclick="moveToIncomplete(${books.indexOf(book)})"><i class="fa-regular fa-circle-check"></i>Belum dibaca</button>` :
-                        `<button class="done" onclick="moveToComplete(${books.indexOf(book)})"><i class="fa-regular fa-circle-check"></i>Selesai dibaca</button>`}
-                    <button class="edit"><i class="fa-solid fa-pen"></i>Edit</button>
-                    <button class="delete" onclick="deleteBook(${books.indexOf(book)})"><i class="fa-regular fa-circle-xmark"></i>Hapus</button>
-                </div>
-            `;
+        bookItem.innerHTML = `
+            <h3>${book.title}</h3>
+            <p>Penulis: ${book.author}</p>
+            <p>Tahun: ${book.year}</p>
+            <p>Halaman ke: ${book.page}</p>
+            <div class="action">
+                <button class="${actionBtnClass}" data-index="${index}">${actionBtnText}</button>
+                <button class="delete" data-index="${index}"><i class="fa-regular fa-circle-xmark"></i>Hapus</button>
+            </div>
+        `;
 
-            if (book.isComplete) {
-                completeBookshelfList.appendChild(bookItem);
-            } else {
-                incompleteBookshelfList.appendChild(bookItem);
-            }
-        });
-    }
+        const bookshelfList = book.isCompleted ? completeBookshelfList : incompleteBookshelfList;
+        bookshelfList.appendChild(bookItem);
+    });
 }
 
-// Function to move book to the complete shelf
+function changeStatus(index, status) {
+    const books = JSON.parse(localStorage.getItem('books')) || [];
+    books[index].isCompleted = status;
+    localStorage.setItem('books', JSON.stringify(books));
+    displayBooks();
+}
+
 function moveToComplete(index) {
-    let books = JSON.parse(localStorage.getItem('books'));
-    books[index].isComplete = true;
-    localStorage.setItem('books', JSON.stringify(books));
-    displayBooks();
+    changeStatus(index, true);
 }
 
-// Function to move book to the incomplete shelf
 function moveToIncomplete(index) {
-    let books = JSON.parse(localStorage.getItem('books'));
-    books[index].isComplete = false;
-    localStorage.setItem('books', JSON.stringify(books));
-    displayBooks();
+    changeStatus(index, false);
 }
 
-// Function to delete a book
 function deleteBook(index) {
     let books = JSON.parse(localStorage.getItem('books'));
     books.splice(index, 1);
@@ -98,7 +81,6 @@ function deleteBook(index) {
     displayBooks();
 }
 
-// Event listener for form submission
 document.querySelector('.inputBook').addEventListener('submit', function (e) {
     e.preventDefault();
     const title = document.querySelector('.BookTitle').value;
@@ -107,90 +89,29 @@ document.querySelector('.inputBook').addEventListener('submit', function (e) {
     const page = document.querySelector('.Bookmark').value;
     const isComplete = document.getElementById('inputBookIsComplete').checked;
 
-    addBook(title, author, year, page, isComplete);
-    displayBooks();
-
-    // Reset form
-    document.querySelector('.inputBook').reset();
-    document.querySelector('.formBook').style.display = 'none';
-});
-
-// Event listener for search input
-document.getElementById('search').addEventListener('input', function () {
-    const searchText = this.value.toLowerCase();
-    const bookItems = document.querySelectorAll('.book_item');
-    
-    bookItems.forEach(item => {
-        const title = item.querySelector('h3').innerText.toLowerCase();
-        if (title.includes(searchText)) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-});
-
-// Initial display of books
-displayBooks();
-// Function to edit a book
-function editBook(index, newTitle, newAuthor, newYear, newPage) {
-    let books = JSON.parse(localStorage.getItem('books'));
-    books[index].title = newTitle;
-    books[index].author = newAuthor;
-    books[index].year = newYear;
-    books[index].page = newPage;
-    localStorage.setItem('books', JSON.stringify(books));
-    displayBooks();
-}
-
-// Event listener for edit button click
-document.addEventListener('click', function (event) {
-    const targetElement = event.target;
-    if (targetElement.classList.contains('edit')) {
-        const bookItem = targetElement.closest('.book_item');
-        const index = [...bookItem.parentElement.children].indexOf(bookItem);
-
-        const title = bookItem.querySelector('h3').innerText;
-        const author = bookItem.querySelector('p:nth-child(2)').innerText.split(': ')[1];
-        const year = bookItem.querySelector('p:nth-child(3)').innerText.split(': ')[1];
-        const page = bookItem.querySelector('p:nth-child(4)').innerText.split(': ')[1];
-
-        // Display the edit form
-        formBook.style.display = 'flex';
-
-        // Populate the edit form with existing data
-        document.querySelector('.BookTitle').value = title;
-        document.querySelector('.BookAuthor').value = author;
-        document.querySelector('.BookYear').value = year;
-        document.querySelector('.Bookmark').value = page;
-
-        // Change the submit button functionality to edit the book
-        document.getElementById('bookSubmit').setAttribute('data-index', index);
-    }
-});
-
-// Event listener for form submission (for both adding and editing book)
-document.querySelector('.inputBook').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const title = document.querySelector('.BookTitle').value;
-    const author = document.querySelector('.BookAuthor').value;
-    const year = document.querySelector('.BookYear').value;
-    const page = document.querySelector('.Bookmark').value;
-    const isComplete = document.getElementById('inputBookIsComplete').checked;
-
-    if (e.target.id === 'bookSubmit') {
-        // If the form is for editing a book
-        const index = e.target.getAttribute('data-index');
-        editBook(index, title, author, year, page);
+    const index = e.target.getAttribute('data-index');
+    if (index !== null && index !== '') {
+        editBook(index, title, author, year, page, isComplete);
     } else {
-        // If the form is for adding a new book
         addBook(title, author, year, page, isComplete);
     }
 
     displayBooks();
-
-    // Reset form
     document.querySelector('.inputBook').reset();
     formBook.style.display = 'none';
 });
 
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('done')) {
+        moveToComplete(event.target.dataset.index);
+    } else if (event.target.classList.contains('undone')) {
+        moveToIncomplete(event.target.dataset.index);
+    } else if (event.target.classList.contains('delete')) {
+        const index = event.target.dataset.index;
+        deleteBook(index);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function(){
+    displayBooks();
+});

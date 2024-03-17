@@ -256,10 +256,6 @@ article {
   background-color: rgb(242, 255, 0);
   margin-right: 10px;
 }
-.edit {
-  background-color: rgb(255, 136, 0);
-  margin-right: 10px;
-}
 .delete {
   background-color: rgb(236, 42, 42);
 }
@@ -269,10 +265,6 @@ article {
 }
 .undone:hover{
   background-color: rgb(145, 152, 20);
-  color: #fff;
-}
-.edit:hover {
-  background-color: rgb(198, 109, 7);
   color: #fff;
 }
 .delete:hover {
