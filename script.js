@@ -1,7 +1,8 @@
-const addBookButton = document.querySelector('.addBook Button');
+const addBookButton = document.querySelector('.addBook');
 const formBook = document.querySelector('.formBook');
 
 addBookButton.addEventListener('click', function () {
+    event.stopPropagation();
     formBook.style.display = 'flex';
 });
 
@@ -12,6 +13,18 @@ document.addEventListener('click', function (event) {
         history.replaceState(null, null, 'index.html');
     }
 });
+
+const scrolled = document.querySelector('.searchAndAdd');
+
+window.addEventListener('scroll', function(){
+    if (window.scrollY > 70) {
+        scrolled.classList.add('scrolled');
+      } else {
+        scrolled.classList.remove('scrolled');
+      }
+});
+
+
 
 function addBook(title, author, year, page, isCompleted) {
     const book = {
@@ -74,11 +87,38 @@ function moveToIncomplete(index) {
     changeStatus(index, false);
 }
 
+function displayConfirmationDialog(index) {
+    const confirmationDialog = document.querySelector('.confirmation-dialog');
+    confirmationDialog.style.display = 'block';
+
+    const confirmDeleteBtn = document.getElementById('confirm-delete');
+    const cancelDeleteBtn = document.getElementById('cancel-delete');
+
+    function handleConfirmDelete() {
+        let books = JSON.parse(localStorage.getItem('books'));
+        books.splice(index, 1);
+        localStorage.setItem('books', JSON.stringify(books));
+        displayBooks();
+        confirmationDialog.style.display = 'none';
+
+        confirmDeleteBtn.removeEventListener('click', handleConfirmDelete);
+        cancelDeleteBtn.removeEventListener('click', handleCancelDelete);
+    }
+
+    function handleCancelDelete() {
+        confirmationDialog.style.display = 'none';
+
+        confirmDeleteBtn.removeEventListener('click', handleConfirmDelete);
+        cancelDeleteBtn.removeEventListener('click', handleCancelDelete);
+    }
+
+    confirmDeleteBtn.addEventListener('click', handleConfirmDelete);
+    cancelDeleteBtn.addEventListener('click', handleCancelDelete);
+}
+
+
 function deleteBook(index) {
-    let books = JSON.parse(localStorage.getItem('books'));
-    books.splice(index, 1);
-    localStorage.setItem('books', JSON.stringify(books));
-    displayBooks();
+    displayConfirmationDialog(index);
 }
 
 document.querySelector('.inputBook').addEventListener('submit', function (e) {

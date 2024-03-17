@@ -52,7 +52,7 @@
         </section>
         
         <section class="book_shelf">
-            <div class="unfinished">
+            <div class="unfinished" id="unfinished">
                 <h2>Belum selesai dibaca</h2>
                 <div id="incompleteBookshelfList" class="book_list">
                     <!-- <article class="book_item">
@@ -67,7 +67,7 @@
                     </article> -->
                 </div>
             </div>
-            <div class="finished">
+            <div class="finished" id="finished">
                 <h2>Selesai dibaca</h2>
                 <div id="completeBookshelfList" class="book_list">
                     <!-- <article class="book_item">
@@ -83,6 +83,22 @@
                 </div>
             </div>
         </section>
+
+        <section class="confirmation-dialog">
+            <div class="dialogDelete">
+                <p>Anda yakin ingin menghapus buku ini?</p>
+                <div class="choiceButton">
+                    <button id="confirm-delete" class="confirm-delete">Ya</button>
+                    <button id="cancel-delete" class="cancel-delete">Tidak</button>
+                </div>
+            </div>      
+        </section>  
+
+        <section class="btnNav">
+            <a href="#"><button id="top"><i class="fa-solid fa-chevron-up"></i></button></a>
+            <a href="#finished"><button id="finish"><i class="fa-solid fa-circle-check"></i></button></a>
+        </section>
+
     </main>
 
     <script src="script.js"></script>
