@@ -1,7 +1,7 @@
 const addBookButton = document.querySelector('.addBook');
 const formBook = document.querySelector('.formBook');
 
-addBookButton.addEventListener('click', function () {
+addBookButton.addEventListener('click', function (event) {
     event.stopPropagation();
     formBook.style.display = 'flex';
 });
@@ -17,22 +17,27 @@ document.addEventListener('click', function (event) {
 const scrolled = document.querySelector('.searchAndAdd');
 
 window.addEventListener('scroll', function(){
-    if (window.scrollY > 70) {
+    if (window.scrollY > 100) {
         scrolled.classList.add('scrolled');
       } else {
         scrolled.classList.remove('scrolled');
       }
 });
 
-
+document.querySelector('#search').addEventListener('input', function (event) {
+    const searchTerm = event.target.value.toLowerCase();
+    console.log(searchTerm);
+    displayBooks(searchTerm);
+});
 
 function addBook(title, author, year, page, isCompleted) {
     const book = {
+        id: +new Date(),
         title,
         author,
         year,
-        page,
-        isCompleted
+        isCompleted,
+        page
     };
     const books = JSON.parse(localStorage.getItem('books')) || [];
     books.push(book);
@@ -40,7 +45,7 @@ function addBook(title, author, year, page, isCompleted) {
     displayBooks();
 }
 
-function displayBooks() {
+function displayBooks(searchTerm = '') {
     const incompleteBookshelfList = document.getElementById('incompleteBookshelfList');
     const completeBookshelfList = document.getElementById('completeBookshelfList');
 
@@ -50,25 +55,27 @@ function displayBooks() {
     const books = JSON.parse(localStorage.getItem('books')) || [];
 
     books.forEach((book, index) => {
-        const bookItem = document.createElement('article');
-        bookItem.classList.add('book_item');
+        if (book.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+            const bookItem = document.createElement('article');
+            bookItem.classList.add('book_item');
 
-        const actionBtnText = book.isCompleted ? 'Belum dibaca' : 'Selesai dibaca';
-        const actionBtnClass = book.isCompleted ? 'undone' : 'done';
+            const actionBtnText = book.isCompleted ? 'Belum dibaca' : 'Selesai dibaca';
+            const actionBtnClass = book.isCompleted ? 'undone' : 'done';
 
-        bookItem.innerHTML = `
-            <h3>${book.title}</h3>
-            <p>Penulis: ${book.author}</p>
-            <p>Tahun: ${book.year}</p>
-            <p>Halaman ke: ${book.page}</p>
-            <div class="action">
-                <button class="${actionBtnClass}" data-index="${index}">${actionBtnText}</button>
-                <button class="delete" data-index="${index}"><i class="fa-regular fa-circle-xmark"></i>Hapus</button>
-            </div>
-        `;
+            bookItem.innerHTML = `
+                <h3>${book.title}</h3>
+                <p>Penulis: ${book.author}</p>
+                <p>Tahun: ${book.year}</p>
+                <p>Halaman ke: ${book.page}</p>
+                <div class="action">
+                    <button class="${actionBtnClass}" data-index="${index}">${actionBtnText}</button>
+                    <button class="delete" data-index="${index}"><i class="fa-regular fa-circle-xmark"></i>Hapus</button>
+                </div>
+            `;
 
-        const bookshelfList = book.isCompleted ? completeBookshelfList : incompleteBookshelfList;
-        bookshelfList.appendChild(bookItem);
+            const bookshelfList = book.isCompleted ? completeBookshelfList : incompleteBookshelfList;
+            bookshelfList.appendChild(bookItem);
+        }
     });
 }
 
@@ -125,8 +132,8 @@ document.querySelector('.inputBook').addEventListener('submit', function (e) {
     e.preventDefault();
     const title = document.querySelector('.BookTitle').value;
     const author = document.querySelector('.BookAuthor').value;
-    const year = document.querySelector('.BookYear').value;
-    const page = document.querySelector('.Bookmark').value;
+    const year = parseInt(document.querySelector('.BookYear').value);
+    const page = parseInt(document.querySelector('.Bookmark').value);
     const isComplete = document.getElementById('inputBookIsComplete').checked;
 
     const index = e.target.getAttribute('data-index');
